@@ -89,7 +89,6 @@ public class Account {
 
         // Valida
         Assert.assertTrue(token.length() != 0);
-
     } // fim do método de geração de token de identificação do usuário
 
 }
