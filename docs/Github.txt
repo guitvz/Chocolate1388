@@ -1,0 +1,20 @@
+Gerenciamento de Configurações
+- Manter os ativos do projeto(Backup)
+- Organizar para uso (Continuidade)
+- Controle de acesso (Privacidade)
+- Controle de versão (Resiliencía)
+Existe uma profissão: SCM - Software Configuration Management
+
+GitHub é um repositório com versionamento
+É um produto da Microsoft
+
+Successfully created projct 'Chocolate1388' on GitHub,
+but inicial commit failed: Author identify unknown
+*** Please tell me who you are. Run
+
+git config --global user.email "guioliveiratvv@gmail.com"
+git config --global user.name "Affguii"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+unable to auto-detect email andress (got'Avell@Avell.(nome)')
