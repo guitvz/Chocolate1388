@@ -12,7 +12,7 @@ Successfully created projct 'Chocolate1388' on GitHub,
 but inicial commit failed: Author identify unknown
 *** Please tell me who you are. Run
 
-git config --global user.email "guioliveiratvv@gmail.com"
+git config --global user.email "guioliveiratvz@gmail.com"
 git config --global user.name "gui071120"
 
 to set your account's default identity.
