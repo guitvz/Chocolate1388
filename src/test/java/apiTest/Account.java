@@ -6,6 +6,7 @@ import entities.AccountEntity;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.ITestContext; // Interface do TestNG para compartilhar variaveis
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -19,19 +20,19 @@ public class Account {
     String jsonBody; // guarda o json que será enviado
     String uri = "https://bookstore.toolsqa.com/Account/v1/"; // Endereço Base
     Response resposta; // guardar o retorno da  API
-    String token; // guardar o token - autenticação do usuário
+    static String token; // guardar o token - autenticação do usuário
 
     // 3.1.2 Instanciar Classes Externas
     Gson gson = new Gson(); // Instancia o objeto de conversão classe para json
-
+    AccountEntity account = new AccountEntity(); // Instancia a entidade usuario
     // 3.2 - Métodos e Funções
 
     // Método #1 - Criar Usuário
     @Test(priority = 1)
     public void testCreateUser(){
         // Arrange - Configura
-        AccountEntity account = new AccountEntity(); // Instancia a entidade usuario
-        account.userName = "Guiaffz0123"; // entrada e saida (resultado esperado)
+
+        account.userName = "Guiaffz0375"; // entrada e saida (resultado esperado)
         account.password = "P@ss0rd1"; // entrada
 
         jsonBody = gson.toJson(account); // Converte a entidade usuario no formato json
@@ -63,7 +64,7 @@ public class Account {
 
     } // fim do método de criação de usuário
     @Test(priority = 2)
-    public void testGenerateToken(){
+    public void testGenerateToken(ITestContext context){ // Declarar a Interface do Contexto
         // Configura
         // --> Dados de Entrada são fornecidos pela AccountEntity
         // --> Resultado Esperado é que ele receba um token
@@ -85,11 +86,106 @@ public class Account {
 
         // Extração do Token
         token = resposta.jsonPath().getString("token");
+        context.setAttribute("token", token);
         System.out.println("token: + token");
 
         // Valida
         Assert.assertTrue(token.length() != 0);
+
     } // fim do método de geração de token de identificação do usuário
+
+    @Test(priority = 3)
+    public void testAuthorized(){
+        // Configura
+        // Dados de Entrada
+        // --> Fornecidos pelo AccountEntity atraves do método testCreaterUser - priority = 1
+
+        // Dados de Saida / Resultado Esperado
+        // StatusCode = 200
+        // Response Body = true
+
+        // Executa
+        given()
+                .contentType(ct)
+                .log().all()
+                .body(jsonBody)
+        .when()
+                .post(uri + "Authorized")
+        // Valida
+        .then()
+                .log().all()
+                .statusCode(200)
+                // .body(true) // ToDo; vomo validar o retorno do body apenas como true
+        ;
+
+    }
+
+    @Test(priority = 4)
+    public void testResearchUserNotAuthorized() {
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saida / Resultado Esperado
+        // Status Code = 401, Code = 1200 e Message = User not authorized
+
+        // Executa
+        given()                                     // Dado // Comandos do REST- assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+        .when()                                     // Quando
+                .get(uri + "user/" + userId)        // Consulta o usuário pelo userId
+        // Valida
+        .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(401)                    // Valida se não está autorizado
+                .body("code", is("1200")) // Valida o codigo de mensagem "não autorizado"
+                .body("message", is("User not authorized!"))
+        ;                                           // Conclui o bloco do REST-assured
+    }
+
+    @Test(priority = 5)
+    public void testResearchUserAuthorized() {
+        // Configura
+        // Dados de Entrada
+        // userId foi extraido no método testCreateUser e está na memória
+        // Dados de Saida / Resultado Esperado
+        // userName virá da classe Account e o status code deve ser 200
+
+        // Executa
+        given()                                     // Dado // Comandos do REST- assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .header("Authorization", "Bearer " + token)
+        .when()                                     // Quando
+                .get(uri + "user/" + userId)        // Consulta o usuário pelo userId
+        // Valida
+        .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(200)                    // Valida se a conexão teve sucesso
+                .body("userId", is(userId))
+                .body("username", is(account.userName)) // Valida o nome do usuário
+        ;                                              // conclui o bloco do REST-assured
+    }
+
+    @Test(priority = 20)
+    public void testDeleteUser() {
+        // Configura
+        // Dados de Entrada vem do método de teste de criação do usuário (userId)
+        // Resultado esperado é o código e mensagem de sucesso na exclusão do usuário
+
+        // Executa
+        given()                                     // Dado // Comandos do REST- assured
+                .contentType(ct)                    // Formato da mensagem
+                .log().all()                        // Exibir tudo que acontece na ida
+                .header("Authorization", "Bearer " + token)
+        .when()                                     // Quando
+                .delete(uri + "user/" + userId)     // Excluir o usuário pelo userId
+        // Valida
+        .then()                                     // Então
+                .log().all()                        // Exibir tudo que acontece na volta
+                .statusCode(204)                    // Valida se a conexão teve sucesso
+        ;                                           // Conclui o bloco do REST-assured
+    }
 
 }
 
