@@ -49,8 +49,4 @@ public class BookStore {
                .statusCode(200)
        ;
    }
-
-
-
-
 }
