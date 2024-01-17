@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 
 // 2 - Bibliotecas
 // 3 - Classe
-public class Account {
+public class TestAccount {
     // 3.1 - Atributos
     String userId;
     String ct = "application/json"; // contentType da APi
@@ -29,10 +29,10 @@ public class Account {
 
     // Método #1 - Criar Usuário
     @Test(priority = 1)
-    public void testCreateUser(){
+    public void testCreateUser(ITestContext context){
         // Arrange - Configura
 
-        account.userName = "Guiaffz0375"; // entrada e saida (resultado esperado)
+        account.userName = "Guiaffz170"; // entrada e saida (resultado esperado)
         account.password = "P@ss0rd1"; // entrada
 
         jsonBody = gson.toJson(account); // Converte a entidade usuario no formato json
@@ -53,12 +53,12 @@ public class Account {
                 .statusCode(201)    // valide a comunicação
                 .body("username", is(account.userName))  // valida o usuario
                 .extract()
-
         ; // fim da linha do REST-assured
 
         // extrair o userID (identificação do usuário)
 
         userId = resposta.jsonPath().getString("userID");
+        context.setAttribute("userId", userId);
         System.out.println("UserID extraido: " + userId);
 
 
