@@ -32,7 +32,7 @@ public class TestAccount {
     public void testCreateUser(ITestContext context){
         // Arrange - Configura
 
-        account.userName = "Guiaffz170"; // entrada e saida (resultado esperado)
+        account.userName = "Guiaffz172"; // entrada e saida (resultado esperado)
         account.password = "P@ss0rd1"; // entrada
 
         jsonBody = gson.toJson(account); // Converte a entidade usuario no formato json
@@ -144,7 +144,7 @@ public class TestAccount {
     }
 
     @Test(priority = 5)
-    public void testResearchUserAuthorized() {
+    public void testResearchUser() {
         // Configura
         // Dados de Entrada
         // userId foi extraido no método testCreateUser e está na memória
@@ -178,15 +178,14 @@ public class TestAccount {
                 .contentType(ct)                    // Formato da mensagem
                 .log().all()                        // Exibir tudo que acontece na ida
                 .header("Authorization", "Bearer " + token)
-        .when()                                     // Quando
+                .when()                                     // Quando
                 .delete(uri + "user/" + userId)     // Excluir o usuário pelo userId
-        // Valida
-        .then()                                     // Então
+                // Valida
+                .then()                                     // Então
                 .log().all()                        // Exibir tudo que acontece na volta
                 .statusCode(204)                    // Valida se a conexão teve sucesso
         ;                                           // Conclui o bloco do REST-assured
     }
-
 }
 
 

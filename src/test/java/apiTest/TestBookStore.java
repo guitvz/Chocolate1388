@@ -15,21 +15,21 @@ public class TestBookStore {
 
     TestAccount account = new TestAccount(); // Instanciar a classe Account
     LoanEntity isbn = new LoanEntity(); // Instancia para a lista de livros
-
     Gson gson = new Gson();
 
-    @BeforeClass // Antes da Classe e de todos os testes dentro da classe
-    //BeforeMethod // Antes de cada @Test
+    @BeforeClass
+    //@BeforeMethod // Antes de cada @Test
     public void setUp(ITestContext context){
 
         account.testCreateUser(context); // cria um novo usuário
         account.testGenerateToken(context); // gera um novo token
     }
 
-    @AfterClass // Depois da classe
-    //AfterMethod // Depois de cada @Test
-    public void tearDown(){
-        account.testDeleteUser(); // excluir o usuário
+    @AfterClass
+    //@AfterMethod // Depois de cada @Teste
+    public void tearDown() throws InterruptedException {
+        account.testResearchUser();
+        account.testDeleteUser(); // Excluir o usuário
     }
 
    @Test(priority = 1)
@@ -54,7 +54,7 @@ public class TestBookStore {
    }
 
    @Test(priority = 2)
-   public void testBorrowBooks(ITestContext context){ // Emprestar Livros
+   public void testLoanBooks(ITestContext context){ // Emprestar Livros
        // Configura
        // Dados de entrada
        // userId virá pelo context
@@ -66,7 +66,7 @@ public class TestBookStore {
 
         // Dados de Saida
        // Status code = 201
-       // Retorne o usbn do livro emprestado (echo)
+       // Retorne o isbn do livro emprestado (echo)
 
        // Executa
        given()
@@ -97,6 +97,7 @@ public class TestBookStore {
        isbn.userId = context.getAttribute("userId").toString(); // código do usuário
        isbn.isbn = isbnNovo; // código do livro que estava com o usuário
 
+
        // Executa
        given()
                .log().all()
@@ -110,6 +111,25 @@ public class TestBookStore {
                .log().all()
                .statusCode(200)
                .body("books[0].isbn", is(isbnNovo))
+       ;
+   }
+   @Test(priority = 4)
+   public void testDeleteLoan(ITestContext context){
+        // Configura
+       // userId vem do BeforeClass
+       // statusCode = 204
+
+       // Executa
+       given()
+               .log().all()
+               .contentType(ct)
+               .header("Authorization", "Bearer " + context.getAttribute("token"))
+       .when()
+               .delete(uri + "Books?UserId=" + context.getAttribute("userId"))
+       // Valida
+       .then()
+               .log().all()
+               .statusCode(204)
        ;
    }
 
