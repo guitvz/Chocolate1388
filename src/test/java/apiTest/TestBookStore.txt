@@ -125,7 +125,7 @@ public class TestBookStore {
                .contentType(ct)
                .header("Authorization", "Bearer " + context.getAttribute("token"))
        .when()
-               .delete(uri + "Books?UserId=" + context.getAttribute("userId"))
+               .delete(uri + "Books?UserIde=" + context.getAttribute("userId"))
        // Valida
        .then()
                .log().all()
