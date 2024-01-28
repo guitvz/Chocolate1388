@@ -1,13 +1,19 @@
 Testes Web
 Aplicações Web
 
-
 - Sites
 - Intranet (portal interno da empresa)
 - Extranet (integração com parceiros e fornecedores)
+
 3 Formas de automatizar:
 - Gravação - Record & Play - Selenium IDE
 - Programação - Direto na IDE com os frameworks como Selenium WebDriver e Cypress
+  Existem alguns modelos de arquitetura (forma como organizamos o código fonte);
+  > Simples: Tudo em 1 script
+  > Associada com práticas de BDD: Selenium + Cucumber
+            1 script de feature em Gherkin + 1 script com passos
+  > Page Objects / Page Factory: 1 mapeamento por página, 1 feature e 1 com os passos
+
 - Híbrido - Usa a gravação como acelerador e depois continua por programação
 
 
