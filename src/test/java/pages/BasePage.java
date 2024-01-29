@@ -8,13 +8,13 @@ import org.openqa.selenium.support.FindBy;
 public class BasePage {
 
      @FindBy(id = "shopping_cart_container")
-    WebElement imgCarrinho;
+     public WebElement imgCarrinho;
 
      @FindBy(css = "span.title")
      WebElement lblTituloPagina;
 
      @FindBy(css = "button.btn btn_primary btn_small btn_inventory")
-     WebElement btnAdicionarOuRemoverNoCarrinho;
+     WebElement btnAdicionarNoCarrinho;
 
      public WebDriver driver;
 
@@ -23,25 +23,21 @@ public class BasePage {
      }
 
      // função para retornar o titulo escrito na guia do browser
-     public String lerTituloAba(){
-         return driver.getTitle();
+     public String lerTituloAba() {return driver.getTitle();}
+
+     public void clicarNoCarrinho() {imgCarrinho.click();     // Clica na imagem do carrinho
      }
 
-     public void clicarNoCarrinho(){
-         imgCarrinho.click();     // Clica na imagem do carrinho
-     }
-
-    public String lerTituloDaPagina(){
-        return lblTituloPagina.getText(); // retorna o que estiver escrito no elemento
+    public String lerTituloDaPagina() {return lblTituloPagina.getText(); // retorna o que estiver escrito no elemento
     }
 
     // Esta função é apenas um exemplo, ela não vai ser usado no exercício
     public String lerTextoDoBotaoAdicionarRemoverDoCarrinho(){
-        return btnAdicionarOuRemoverNoCarrinho.getText();
+        return btnAdicionarNoCarrinho.getText();
     }
 
     public void clicarNoBotaoAdicionarOuRemoverNoCarrinho(){
-        btnAdicionarOuRemoverNoCarrinho.click();
+        btnAdicionarNoCarrinho.click();
 
     }
  }
