@@ -5,15 +5,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InventoryItemPage extends BasePage{
+public class InventoryItemPage extends CommonPage {
     // Elementos
-    @FindBy(css = "div.inventory_details_name large_size")
+    @FindBy(css = "div.inventory_details_name.large_size")
     WebElement lblTituloProduto;
 
     @FindBy(css = "div.inventory_details_price")
     WebElement lblPrecoProduto;
 
-    @FindBy(css = "button.btn btn_primary btn_small btn_inventory")
+    @FindBy(css = "button.btn_primary.btn_small.btn_inventory")
     WebElement btnAdicionarOuRemoverNoCarrinho;
 
     // Construtor

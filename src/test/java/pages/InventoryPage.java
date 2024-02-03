@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InventoryPage extends BasePage{
+public class InventoryPage extends CommonPage {
     // Mapeamento
     @FindBy(css = "span.title")
     WebElement lblTituloPagina;

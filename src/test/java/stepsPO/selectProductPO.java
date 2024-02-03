@@ -22,13 +22,18 @@ public class selectProductPO {
     private InventoryPage inventoryPage;
 
     // Construtor
-    public selectProductPO(BasePage basePage){
-        this.driver = basePage.driver; // passagem de bola = integração Selenium dentro e fora
+    public selectProductPO(Base base){
+        this.driver = Base.driver; // passagem de bola = integração Selenium dentro e fora
     }
 
     @Given("I access SauceDemo store PO")
     public void i_access_sauce_demo_store() {
         driver.get("https://www.saucedemo.com");
+        homePage = new HomePage(this.driver);
+        inventoryPage = new InventoryPage(this.driver);
+        inventoryItemPage = new InventoryItemPage(this.driver);
+        cartPage = new CartPage(this.driver);
+
     }
 
     @When("I filled a user {string} and password {string} PO")
